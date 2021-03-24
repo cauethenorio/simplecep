@@ -30,8 +30,8 @@ It will try to get the CEP address using Correios official API and if
 it fails it will use third-party API as fallbacks.
 
 By default, it uses the following CEP APIs:
-    - https://www.republicavirtual.com.br
-    - https://viacep.com.br/
+- https://www.republicavirtual.com.br
+- https://viacep.com.br/
 
 Both APIs are queried concurrently using threads, and the first received result is used.
 
