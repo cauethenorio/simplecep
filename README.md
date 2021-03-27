@@ -84,9 +84,18 @@ Example:
 {
     'cep': '59615350',
     'street': 'Rua João Simão do Nascimento',
-    'state': 'RN',
     'district': 'Santa Delmira',
-    'city': 'Mossoró'
+    'city': 'Mossoró',
+    'state': 'RN'
+}
+
+>> address.to_dict(br_names=True)
+{
+    'cep': '59615350',
+    'rua': 'Rua João Simão do Nascimento',
+    'bairro': 'Santa Delmira',
+    'cidade': 'Mossoró',
+    'estado': 'RN'
 }
 ```
 

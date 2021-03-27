@@ -10,6 +10,13 @@ class CEPAddress:
 
     _data_fields: typing.List[str] = "cep street state district city".split(" ")
 
+    _br_fields = {
+        "estado": "state",
+        "cidade": "city",
+        "bairro": "district",
+        "rua": "street",
+    }
+
     def __init__(self, cep, state, city, district=None, street=None, provider=None):
         self.cep: str = clean_cep(cep)
         self.state: str = state
@@ -28,9 +35,21 @@ class CEPAddress:
         # if all CEP fields are equal, both CEPAddresses are equal
         return all(getattr(self, f) == getattr(other, f) for f in self._data_fields)
 
-    def to_dict(self, with_provider=False):
+    def to_dict(self, with_provider=False, br_names=False):
         data_fields = self._data_fields.copy()
         if with_provider:
             data_fields.append("provider")
 
-        return {field: getattr(self, field) for field in data_fields}
+        fields = {field: getattr(self, field) for field in data_fields}
+
+        if br_names:
+            fields = {k: fields[v] for k, v in self._br_fields.items()}
+
+        return fields
+
+    def __getattr__(self, item):
+        try:
+            field_key = self._br_fields[item]
+            return getattr(self, field_key)
+        except KeyError:
+            raise AttributeError
