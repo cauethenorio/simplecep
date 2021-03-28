@@ -1,3 +1,22 @@
+"""
+Run this file with:
+> python -m tests.providers.capture_real_responses
+
+To:
+- Read all CEPs from "providers_test_data.py" file
+- Request CEP addresses from all available providers
+- Intercept all HTTP requests logging requests and responses
+- Save responses to the "captured_responses.py" file
+
+That file will be used by both:
+- test_expected_responses.py
+- test_unexpected_responses.py
+
+To test provider functions against using saved responses,
+so no real providers are contacted when tests run.
+"""
+
+import io
 import os
 import logging
 import socket
@@ -16,6 +35,21 @@ from .providers_tests_data import providers_tests_data
 captured_responses = []
 
 
+def read_and_restore_buffer(response):
+    """
+    reads http.client.HTTPResponse object body and then make it readable
+    again replacing the read() method with a fake one which returns a
+    new unread buffer with original body content
+    """
+
+    content = response.read()
+    fake_buffer = io.BytesIO(content)
+    response.read = fake_buffer.read
+    response.chunked = False
+    response.length = len(content)
+    return response, content
+
+
 def get_logger():
     """
     logs whats being fetched
@@ -32,13 +66,6 @@ def get_logger():
 logger = get_logger()
 
 
-class UnexpectedNetworkError(Exception):
-    """
-    On real network errors like timeouts or DNS problems we need to raise
-    a different errors because URLError is captured inside the providers code.
-    """
-
-
 def patched_urlopen(req, timeout):
     """
     Captures request and response data and store
@@ -51,15 +78,18 @@ def patched_urlopen(req, timeout):
             "data": req.data,
         }
     }
+    captured_error = None
     start_timer = timer()
 
     try:
         res = urlopen(req, timeout=timeout)
     except HTTPError as error:
+        (error, content) = read_and_restore_buffer(error)
+        captured_error = error
         captured["response"] = {
             "type": "error",
             "status": error.status,
-            "data": error.read(),
+            "data": content,
         }
     except (URLError, socket.timeout):
         elapsed_time = timer() - start_timer
@@ -70,9 +100,11 @@ def patched_urlopen(req, timeout):
         )
         sys.exit(1)
     else:
-        captured["response"] = {"type": "success", "data": res.read()}
+        (res, content) = read_and_restore_buffer(res)
+        captured["response"] = {"type": "success", "data": content}
 
     elapsed_time = timer() - start_timer
+
     logger.info(
         "Captured {response_type:<7} response in {elapsed_time:2.2f}s from "
         "{method:<4} to {full_url}".format(
@@ -83,7 +115,11 @@ def patched_urlopen(req, timeout):
     )
 
     captured_responses.append(captured)
-    return urlopen(req, timeout=timeout)
+
+    if captured_error:
+        raise captured_error
+
+    return res
 
 
 def save_to_file(data):
