@@ -1,24 +1,21 @@
 # simpleCEP
 
-[![PyPI badge](https://img.shields.io/pypi/v/simplecep.svg)](https://pypi.python.org/pypi/simplecep)
+[![PyPI badge](https://img.shields.io/pypi/v/simplecep.svg)](https://pypi.python.org/pypi/simplecep) [![Compatible Python Versions](https://img.shields.io/pypi/pyversions/simplecep.svg)](https://pypi.python.org/pypi/simplecep)
 
----
-
-Fetch CEP addresses consistently using Correios API, third-party APIs as fallbacks
-and cache the results.
+Reliably resolve Brazilian CEP addresses using multiple APIs.
 
 
-## Motivation
+## Why
 
-Many systems require access to the CEP (Brazilian postal code) database, but ECT
-(Correios Company) doesn't open the data, requiring systems to fetch CEP data
-individually through their API or buying the full database from their website.
+ECT (Correios Company) doesn't open their CEP (Brazilian Zip Codes) data, requiring
+systems to fetch CEP data individually through their API or buying the full
+database from their website.
 
-Correios API (SIGEPWEB) is known for its outages, which impacts systems which
-relies on resolving CEPs as addresses as e-commerces.
+Correios API (SIGEPWeb) is known for its outages, which impacts systems which
+relies on resolving CEPs as addresses, as e-commerces.
 
-This library addresses the problem using alternative CEP data sources as third-party
-APIs and internal cache when the Correios API doesn't respond in time.
+This library addresses the problem using alternative CEP data APIs as fallbacks
+when Correios API doesn't respond in time and caching all received results.
 
 
 ## How it works
@@ -82,16 +79,33 @@ Example:
 
 >> address.to_dict()
 {
-    'cep': '59615350',
+    'cep': '59615-350',
     'street': 'Rua João Simão do Nascimento',
     'district': 'Santa Delmira',
     'city': 'Mossoró',
     'state': 'RN'
 }
+```
+
+The `CEPAddress` class provides the address fields in both English and
+Brazilian Portuguese names:
+
+```python
+>> address
+<CEPAddress 59615-350>
+
+>> address.street
+'Rua João Simão do Nascimento'
+
+>> address.rua
+'Rua João Simão do Nascimento'
+
+>> address.city == address.cidade
+True
 
 >> address.to_dict(br_names=True)
 {
-    'cep': '59615350',
+    'cep': '59615-350',
     'rua': 'Rua João Simão do Nascimento',
     'bairro': 'Santa Delmira',
     'cidade': 'Mossoró',
