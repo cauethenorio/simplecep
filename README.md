@@ -1,6 +1,7 @@
 # simpleCEP
 
-[![PyPI badge](https://img.shields.io/pypi/v/simplecep.svg)](https://pypi.python.org/pypi/simplecep)
+[![PyPI version](https://badge.fury.io/py/simplecep.svg)](https://badge.fury.io/py/simplecep)
+[![Tests Status](https://github.com/cauethenorio/simplecep/actions/workflows/tests.yml/badge.svg)](https://github.com/cauethenorio/simplecep/actions/workflows/tests.yml)
 [![Coverage Status](https://coveralls.io/repos/github/cauethenorio/simplecep/badge.svg?branch=main)](https://coveralls.io/github/cauethenorio/simplecep?branch=main)
 [![Compatible Python Versions](https://img.shields.io/pypi/pyversions/simplecep.svg)](https://pypi.python.org/pypi/simplecep)
 
