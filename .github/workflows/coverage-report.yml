@@ -11,6 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Set up Python
     - uses: actions/setup-python@v2
       with:
         python-version: 3.6
@@ -27,7 +28,7 @@ jobs:
         coverage report -m
 
     - name: Coveralls
-      uses: AndreMiras/coveralls-python-action@develop
+      uses: AndreMiras/coveralls-python-action@5edca599434006460612ac39adf7b534d7422d89
       with:
         parallel: true
         flag-name: Tests
@@ -37,6 +38,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Publish coverage
-      uses: AndreMiras/coveralls-python-action@develop
+      uses: AndreMiras/coveralls-python-action@5edca599434006460612ac39adf7b534d7422d89
       with:
         parallel-finished: true
