@@ -1,4 +1,5 @@
 import json
+import re
 import typing
 
 from simplecep.cepaddress import CEPAddress
@@ -42,7 +43,8 @@ def clean_and_add_cep(raw_fields, cep: str) -> CEPAddress:
     }
 
     if fields.get("logradouro") and fields.get("tipo_logradouro"):
-        fields["street"] = f"{fields['tipo_logradouro']} {fields['logradouro']}"
+        logradouro = clean_street(fields["logradouro"])
+        fields["street"] = f"{fields['tipo_logradouro']} {logradouro}"
 
     return build_cepaddress(
         "republicavirtual",
@@ -54,3 +56,19 @@ def clean_and_add_cep(raw_fields, cep: str) -> CEPAddress:
             "street": fields.get("street"),
         },
     )
+
+
+street_side_regex = re.compile(r" (- )?Lado (Imp|P)ar$")
+street_number_regex = re.compile(r" - de \d+/\d+ a \d+/\d+")
+
+
+def clean_street(street: str) -> str:
+    """
+    Strip "complemento" data from street field.
+    Examples:
+        CEP 37503-003 street value: "Geraldino Campista - de 216/217 a 869/870"
+        CEP 06018-105 street value: "Analice Sturlini - Lado Impar"
+    """
+    street = street_side_regex.sub("", street)
+    street = street_number_regex.sub("", street)
+    return street
