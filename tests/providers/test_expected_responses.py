@@ -66,4 +66,9 @@ def test_expected_providers_responses(input_output, cep_provider):
             expected_cep_address = None
 
         cep_address = cep_provider(cep, timeout=1)
+
+        if cep_address is not None:
+            # use dict comparison to spot differences easily on pytest error outpuit
+            assert cep_address.to_dict() == expected_cep_address.to_dict()
+
         assert cep_address == expected_cep_address
