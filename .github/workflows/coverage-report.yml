@@ -24,8 +24,7 @@ jobs:
       run: |
         coverage run --source simplecep -m pytest
         coverage report -m
-        coverage html
-        
+
     - name: Coveralls
       uses: AndreMiras/coveralls-python-action@develop
       with:

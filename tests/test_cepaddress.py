@@ -105,3 +105,7 @@ def test_br_fields_access():
     assert address2.cidade is address_data2["city"]
     assert address2.bairro is None
     assert address2.street is None
+
+    # __getattr__ should raise AttributeError for invalid keys
+    with pytest.raises(AttributeError):
+        address.eestado

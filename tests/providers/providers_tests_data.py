@@ -135,6 +135,7 @@ providers_tests_data = [
             "street": "Rua Amoreira",
         },
     },
+    # tests for invalid/non-existent cep numbers
     {"input": "00000000", "expected_result": None},
     {"input": "11111111", "expected_result": None},
     {"input": "99999999", "expected_result": None},

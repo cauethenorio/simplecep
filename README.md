@@ -1,6 +1,8 @@
 # simpleCEP
 
-[![PyPI badge](https://img.shields.io/pypi/v/simplecep.svg)](https://pypi.python.org/pypi/simplecep) [![Compatible Python Versions](https://img.shields.io/pypi/pyversions/simplecep.svg)](https://pypi.python.org/pypi/simplecep)
+[![PyPI badge](https://img.shields.io/pypi/v/simplecep.svg)](https://pypi.python.org/pypi/simplecep)
+[![Coverage Status](https://coveralls.io/repos/github/cauethenorio/simplecep/badge.svg?branch=main)](https://coveralls.io/github/cauethenorio/simplecep?branch=main)
+[![Compatible Python Versions](https://img.shields.io/pypi/pyversions/simplecep.svg)](https://pypi.python.org/pypi/simplecep)
 
 Reliably resolve Brazilian CEP addresses using multiple APIs.
 
