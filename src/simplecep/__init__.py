@@ -1,6 +1,6 @@
 __author__ = """Cauê Thenório"""
 __email__ = "caue@thenorio.com.br"
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 
 from .cepaddress import CEPAddress

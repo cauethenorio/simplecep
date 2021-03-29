@@ -1,6 +1,6 @@
 # History
 
-## 0.2.0
+## 0.1.1 (2021-03-29)
  - CEPAddress now supports Brazilian address fields names (estado, cidade, bairro, rua)
  - Update `capture_real_responses.py` test-script to not double-request providers
  - Clean RepublicVirtual provider "address" field

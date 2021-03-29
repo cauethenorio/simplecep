@@ -10,7 +10,7 @@ with open("HISTORY.md") as history_file:
 
 setup(
     name="simplecep",
-    version="0.1.0",
+    version="0.1.1",
     description=(
         "Fetch CEP addresses consistently using Correios API, "
         "third-party APIs as fallbacks and cache the results."
